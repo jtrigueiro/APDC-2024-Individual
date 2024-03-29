@@ -47,6 +47,8 @@ public class LoginResource {
         Key logKey = datastore.allocateId(
                 datastore.newKeyFactory().addAncestor(PathElement.of("User", data.username))
                         .setKind("UserLog").newKey());
+        // Generate automatically token key
+        Key tokenKey = datastore.newKeyFactory().setKind("Token").newKey(data.username);
 
         Transaction txn = datastore.newTransaction();
         try {
@@ -68,6 +70,20 @@ public class LoginResource {
             }
             String hashedPWD = (String) user.getString("user_pwd");
             if (hashedPWD.equals(DigestUtils.sha512Hex(data.password))) {
+
+                AuthToken token = new AuthToken(data.username);
+                Entity tokenEntity = txn.get(tokenKey);
+                // If the token is not in the storage (Datastore) or it is expired
+                if (tokenEntity == null || System.currentTimeMillis() > tokenEntity.getLong("token_expirationData")) {
+                    // Create or update token
+                    tokenEntity = Entity.newBuilder(tokenKey)
+                            .set("token_id", token.tokenID)
+                            .set("token_creationData", token.creationData)
+                            .set("token_expirationData", token.expirationData)
+                            .build();
+                    txn.put(tokenEntity);
+                }
+
                 // Password is correct
                 // Construct the logs
                 Entity log = Entity.newBuilder(logKey)
@@ -96,8 +112,7 @@ public class LoginResource {
                 txn.commit();
 
                 // Return token
-                AuthToken token = new AuthToken(data.username);
-                LOG.info("User '" + data.username + "' logged in successfully.");
+                LOG.info("User '" + data.username + "' logged in successfully with the token " + token.tokenID);
                 return Response.ok(g.toJson(token)).build();
 
             } else {

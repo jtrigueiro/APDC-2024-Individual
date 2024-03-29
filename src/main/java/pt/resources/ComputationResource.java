@@ -1,4 +1,4 @@
-package pt.unl.fct.di.apdc.firstwebapp.resources;
+package pt.resources;
 
 import java.io.IOException;
 import java.net.URI;
@@ -38,10 +38,6 @@ public class ComputationResource {
 			LOG.log(Level.SEVERE, "Exception on Method /hello", e);
 			return Response.temporaryRedirect(URI.create("/error/500.html")).build();
 		}
-
-		// LOG.fine("Saying hello!!");
-		// return Response.ok().entity("Hello apdc-pei-2324 class! I hope you are having
-		// a fine day.").build();
 	}
 
 	@GET

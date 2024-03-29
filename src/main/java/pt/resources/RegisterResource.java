@@ -1,4 +1,4 @@
-package pt.unl.fct.di.apdc.firstwebapp.resources;
+package pt.resources;
 
 import java.util.logging.Logger;
 
@@ -9,9 +9,8 @@ import javax.ws.rs.core.Response;
 import com.google.cloud.Timestamp;
 import com.google.cloud.datastore.*;
 
-import com.google.gson.Gson;
-
 import org.apache.commons.codec.digest.DigestUtils;
+
 import pt.unl.fct.di.apdc.firstwebapp.resources.util.RegisterData;
 
 @Path("/register")
@@ -22,7 +21,6 @@ public class RegisterResource {
      */
     private static final Logger LOG = Logger.getLogger(ComputationResource.class.getName());
 
-    private final Gson g = new Gson();
     private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
     public RegisterResource() {
@@ -44,6 +42,22 @@ public class RegisterResource {
                 txn.rollback();
                 return Response.status(Response.Status.BAD_REQUEST).entity("User already eists.").build();
             } else {
+                // Check the number of existing users
+                Query<Entity> query = Query.newEntityQueryBuilder()
+                        .setKind("User")
+                        .build();
+                QueryResults<Entity> results = datastore.run(query);
+                int userCount = 0;
+                while (results.hasNext()) {
+                    results.next();
+                    userCount++;
+                }
+
+                if (userCount > 4) {
+                    return Response.status(Response.Status.BAD_REQUEST)
+                            .entity("Maximum of 4 users reached.")
+                            .build();
+                }
                 user = Entity.newBuilder(userKey)
                         .set("user_name", data.name)
                         .set("user_pwd", DigestUtils.sha512Hex(data.password))

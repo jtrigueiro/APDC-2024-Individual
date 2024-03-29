@@ -1,4 +1,4 @@
-package pt.unl.fct.di.apdc.firstwebapp.resources;
+package pt.resources;
 
 import java.util.logging.Logger;
 
@@ -14,6 +14,7 @@ import com.google.cloud.datastore.*;
 import com.google.gson.Gson;
 
 import org.apache.commons.codec.digest.DigestUtils;
+
 import pt.unl.fct.di.apdc.firstwebapp.resources.util.AuthToken;
 import pt.unl.fct.di.apdc.firstwebapp.resources.util.LoginData;
 

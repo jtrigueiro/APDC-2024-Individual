@@ -1,23 +1,64 @@
 package pt.unl.fct.di.apdc.firstwebapp.util;
 
+import pt.unl.fct.di.apdc.firstwebapp.resources.PermissionsResource.Role;
+import pt.unl.fct.di.apdc.firstwebapp.resources.PermissionsResource.State;
+
 public class RegisterData {
 
-    public String username, password, email, name;
+    public String username, password, name, phoneNumber, email, job, workPlace, address, postalCode, NIF;
+    public Role role;
+    public State state;
+    public boolean isPrivate;
+
+    private static final String EMPTY = "Missing";
 
     public RegisterData() {
 
     }
 
-    public RegisterData(String username, String password, String email, String name) {
+    public RegisterData(String username, String password, String name, String phoneNumber, String email, String job,
+            String workPlace, String address, String postalCode, String NIF, boolean isPrivate, Role role,
+            State state) {
         this.username = username;
         this.password = password;
-        this.email = email;
         this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+
+        if (job == null)
+            this.job = EMPTY;
+        else
+            this.job = job;
+
+        if (workPlace == null)
+            this.workPlace = EMPTY;
+        else
+            this.workPlace = workPlace;
+
+        if (address == null)
+            this.address = EMPTY;
+        else
+            this.address = address;
+
+        if (postalCode == null)
+            this.postalCode = EMPTY;
+        else
+            this.postalCode = postalCode;
+
+        if (NIF == null)
+            this.NIF = EMPTY;
+        else
+            this.NIF = NIF;
+
+        this.isPrivate = isPrivate;
+
+        this.role = role;
+        this.state = state;
 
     }
 
     public boolean validRegistration() {
-        return !(username == null && password == null);
+        return !(username == null && password == null && email == null && phoneNumber == null);
     }
 
 }

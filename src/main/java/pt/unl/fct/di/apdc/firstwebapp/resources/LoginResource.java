@@ -1,4 +1,4 @@
-package pt.resources;
+package pt.unl.fct.di.apdc.firstwebapp.resources;
 
 import java.util.logging.Logger;
 
@@ -15,8 +15,8 @@ import com.google.gson.Gson;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import pt.unl.fct.di.apdc.firstwebapp.resources.util.AuthToken;
-import pt.unl.fct.di.apdc.firstwebapp.resources.util.LoginData;
+import pt.unl.fct.di.apdc.firstwebapp.util.AuthToken;
+import pt.unl.fct.di.apdc.firstwebapp.util.LoginData;
 
 @Path("/login")
 @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")

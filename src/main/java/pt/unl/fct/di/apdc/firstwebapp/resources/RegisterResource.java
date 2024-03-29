@@ -1,4 +1,4 @@
-package pt.resources;
+package pt.unl.fct.di.apdc.firstwebapp.resources;
 
 import java.util.logging.Logger;
 
@@ -11,7 +11,7 @@ import com.google.cloud.datastore.*;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import pt.unl.fct.di.apdc.firstwebapp.resources.util.RegisterData;
+import pt.unl.fct.di.apdc.firstwebapp.util.RegisterData;
 
 @Path("/register")
 @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")

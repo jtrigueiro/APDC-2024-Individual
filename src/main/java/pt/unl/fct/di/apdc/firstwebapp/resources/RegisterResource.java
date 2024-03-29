@@ -24,24 +24,26 @@ public class RegisterResource {
 
     private final Gson g = new Gson();
     private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-    public RegisterResource(){}
+
+    public RegisterResource() {
+    }
 
     @POST
     @Path("/v1")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response doRegistrationV1(RegisterData data){
+    public Response doRegistrationV1(RegisterData data) {
         LOG.fine("Attempt to register user:" + data.username);
-        if(!data.validRegistration())
+        if (!data.validRegistration())
             return Response.status(Response.Status.BAD_REQUEST).entity("Missing or wrong parameter.").build();
         Transaction txn = datastore.newTransaction();
-        try{
-            //Creates an entity user form the data. THe key is username
+        try {
+            // Creates an entity user form the data. THe key is username
             Key userKey = datastore.newKeyFactory().setKind("User").newKey(data.username);
             Entity user = txn.get(userKey);
-            if(user != null){
+            if (user != null) {
                 txn.rollback();
                 return Response.status(Response.Status.BAD_REQUEST).entity("User already eists.").build();
-            }else{
+            } else {
                 user = Entity.newBuilder(userKey)
                         .set("user_name", data.name)
                         .set("user_pwd", DigestUtils.sha512Hex(data.password))
@@ -50,26 +52,15 @@ public class RegisterResource {
                         .build();
 
                 txn.add(user);
-                LOG.info("User registered "+ data.username);
+                LOG.info("User registered " + data.username);
                 txn.commit();
                 return Response.ok("{}").build();
             }
 
-        }finally {
-            if(txn.isActive()){
+        } finally {
+            if (txn.isActive()) {
                 txn.rollback();
             }
-        }
-
-    }
-
-    @GET
-    @Path("/{username}")
-    public Response doLogin(@PathParam("username") String username){
-        if(username.trim().equals("jleitao")){
-            return Response.ok().entity(g.toJson(false)).build();
-        }else{
-            return Response.ok().entity(g.toJson(true)).build();
         }
 
     }

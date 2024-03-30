@@ -10,8 +10,6 @@ public class RegisterData {
     public State state;
     public boolean isPrivate;
 
-    private static final String EMPTY = "Missing";
-
     public RegisterData() {
 
     }
@@ -24,34 +22,12 @@ public class RegisterData {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-
-        if (job == null)
-            this.job = EMPTY;
-        else
-            this.job = job;
-
-        if (workPlace == null)
-            this.workPlace = EMPTY;
-        else
-            this.workPlace = workPlace;
-
-        if (address == null)
-            this.address = EMPTY;
-        else
-            this.address = address;
-
-        if (postalCode == null)
-            this.postalCode = EMPTY;
-        else
-            this.postalCode = postalCode;
-
-        if (NIF == null)
-            this.NIF = EMPTY;
-        else
-            this.NIF = NIF;
-
+        this.job = job;
+        this.workPlace = workPlace;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.NIF = NIF;
         this.isPrivate = isPrivate;
-
         this.role = role;
         this.state = state;
 

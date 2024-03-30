@@ -66,7 +66,7 @@ public class RegisterResource {
                     userCount++;
                 }
 
-                if (userCount > 4) {
+                if (userCount >= 4) {
                     return Response.status(Response.Status.BAD_REQUEST)
                             .entity("Maximum of 4 users reached.")
                             .build();

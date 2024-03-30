@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+import pt.unl.fct.di.apdc.firstwebapp.resources.PermissionsResource.State;
 import pt.unl.fct.di.apdc.firstwebapp.util.AuthToken;
 import pt.unl.fct.di.apdc.firstwebapp.util.LoginData;
 
@@ -59,6 +60,12 @@ public class LoginResource {
                 LOG.warning("Failed login attempt for username: " + data.username);
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
+            // check if the user is disabled
+            if (((String) user.getString("user_state")).equals(State.DISABLED.toString())) {
+                LOG.warning("Failed login attempt for username: " + data.username + " - user is disabled");
+                return Response.status(Response.Status.FORBIDDEN).entity("User is not enabled!").build();
+            }
+
             // We get the suer stats from the storage
             Entity stats = txn.get(ctrsKey);
             if (stats == null) {
@@ -72,15 +79,15 @@ public class LoginResource {
             String hashedPWD = (String) user.getString("user_pwd");
             if (hashedPWD.equals(DigestUtils.sha512Hex(data.password))) {
 
-                AuthToken token = new AuthToken(data.username);
                 Entity tokenEntity = txn.get(tokenKey);
                 // If the token is not in the storage (Datastore) or it is expired
                 if (tokenEntity == null || System.currentTimeMillis() > tokenEntity.getLong("token_expirationData")) {
                     // Create or update token
+                    AuthToken newToken = new AuthToken(data.username);
                     tokenEntity = Entity.newBuilder(tokenKey)
-                            .set("token_id", token.tokenID)
-                            .set("token_creationData", token.creationData)
-                            .set("token_expirationData", token.expirationData)
+                            .set("token_id", newToken.tokenID)
+                            .set("token_creationData", newToken.creationData)
+                            .set("token_expirationData", newToken.expirationData)
                             .build();
                     txn.put(tokenEntity);
                 }
@@ -113,12 +120,12 @@ public class LoginResource {
                 txn.commit();
 
                 // Return token
-                LOG.info("User '" + data.username + "' logged in successfully with the token " + token.tokenID);
-                return Response.ok(g.toJson(token)).build();
+                LOG.info("User '" + data.username + "' logged in successfully with the token "
+                        + (String) tokenEntity.getString("token_id"));
+                return Response.ok((String) tokenEntity.getString("token_id")).build();
 
             } else {
                 // Incorrect passowrd
-                // TODO: Copying here is even worse. Propose a better solution!
                 Entity ustats = Entity.newBuilder(ctrsKey)
                         .set("user_stats_logins", stats.getLong("user_stats_logins"))
                         .set("user_stats_failed", 1L + stats.getLong("user_stats_failed"))

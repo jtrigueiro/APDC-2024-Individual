@@ -11,7 +11,6 @@ import javax.ws.rs.core.Response;
 
 import com.google.cloud.Timestamp;
 import com.google.cloud.datastore.*;
-import com.google.gson.Gson;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -27,7 +26,6 @@ public class LoginResource {
      */
     private static final Logger LOG = Logger.getLogger(ComputationResource.class.getName());
 
-    private final Gson g = new Gson();
     private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
     private final KeyFactory userKeyFactory = datastore.newKeyFactory().setKind("User");
 

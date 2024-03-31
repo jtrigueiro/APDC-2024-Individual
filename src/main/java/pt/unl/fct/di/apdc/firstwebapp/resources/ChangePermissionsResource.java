@@ -1,5 +1,7 @@
 package pt.unl.fct.di.apdc.firstwebapp.resources;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.cloud.datastore.*;
 import pt.unl.fct.di.apdc.firstwebapp.util.ChangeRoleData;
 import pt.unl.fct.di.apdc.firstwebapp.resources.PermissionsResource.State;
@@ -22,9 +24,10 @@ public class ChangePermissionsResource {
 
     @PUT
     @Path("/role")
+    @JsonCreator
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Response changeRole(ChangeRoleData data) {
+    public Response changeRole(@JsonProperty("data") ChangeRoleData data) {
         Key userKey = userKeyFactory.newKey(data.username);
         Key targetUserKey = userKeyFactory.newKey(data.targetUsername);
         Key tokenKey = tokenKeyFactory.newKey(data.username);

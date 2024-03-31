@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 
 import com.google.cloud.Timestamp;
 import com.google.cloud.datastore.*;
-
+import com.google.gson.Gson;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import pt.unl.fct.di.apdc.firstwebapp.resources.PermissionsResource.State;
@@ -25,7 +25,7 @@ public class LoginResource {
      * Logger Object
      */
     private static final Logger LOG = Logger.getLogger(ComputationResource.class.getName());
-
+    private final Gson g = new Gson();
     private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
     private final KeyFactory userKeyFactory = datastore.newKeyFactory().setKind("User");
 
@@ -36,7 +36,8 @@ public class LoginResource {
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Response doLogin(LoginData data, @Context HttpServletRequest request, @Context HttpHeaders headers) {
+    public Response doLogin(LoginData data, @Context HttpServletRequest request,
+            @Context HttpHeaders headers) {
         LOG.fine("Attempt to login user: " + data.username);
         // Keys should be generated outside transactions
         // Construct the key from the username
@@ -78,16 +79,20 @@ public class LoginResource {
             if (hashedPWD.equals(DigestUtils.sha512Hex(data.password))) {
 
                 Entity tokenEntity = txn.get(tokenKey);
+                AuthToken token;
                 // If the token is not in the storage (Datastore) or it is expired
                 if (tokenEntity == null || System.currentTimeMillis() > tokenEntity.getLong("token_expirationData")) {
+                    token = new AuthToken(data.username);
                     // Create or update token
-                    AuthToken newToken = new AuthToken(data.username);
                     tokenEntity = Entity.newBuilder(tokenKey)
-                            .set("token_id", newToken.tokenID)
-                            .set("token_creationData", newToken.creationData)
-                            .set("token_expirationData", newToken.expirationData)
+                            .set("token_id", token.tokenID)
+                            .set("token_creationData", token.creationData)
+                            .set("token_expirationData", token.expirationData)
                             .build();
                     txn.put(tokenEntity);
+                } else {
+                    token = new AuthToken(data.username, tokenEntity.getString("token_id"),
+                            tokenEntity.getLong("token_creationData"), tokenEntity.getLong("token_expirationData"));
                 }
 
                 // Password is correct
@@ -120,7 +125,7 @@ public class LoginResource {
                 // Return token
                 LOG.info("User '" + data.username + "' logged in successfully with the token "
                         + (String) tokenEntity.getString("token_id"));
-                return Response.ok((String) tokenEntity.getString("token_id")).build();
+                return Response.ok(g.toJson(token)).build();
 
             } else {
                 // Incorrect passowrd

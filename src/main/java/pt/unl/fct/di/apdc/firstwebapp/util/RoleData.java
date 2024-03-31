@@ -3,17 +3,17 @@ package pt.unl.fct.di.apdc.firstwebapp.util;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ChangeRoleData {
+public class RoleData {
     public String username;
     public String targetUsername;
     public String newRole;
     public AuthToken token;
 
-    public ChangeRoleData() {
+    public RoleData() {
     }
 
     @JsonCreator
-    public ChangeRoleData(@JsonProperty("username") String username,
+    public RoleData(@JsonProperty("username") String username,
             @JsonProperty("targetUsername") String targetUsername, @JsonProperty("newRole") String newRole,
             @JsonProperty("token") AuthToken token) {
         this.username = username;

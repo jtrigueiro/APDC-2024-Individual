@@ -46,7 +46,7 @@ public class PermissionsResource {
         }
     }
 
-    public boolean canChangeState(Entity user, Entity targetUser) {
+    public static boolean canChangeState(Entity user, Entity targetUser) {
         try {
             Role role = Role.valueOf(user.getString("user_role"));
             Role targetRole = Role.valueOf(targetUser.getString("user_role"));
@@ -71,7 +71,7 @@ public class PermissionsResource {
         }
     }
 
-    public State changeState(Entity targetUser) {
+    public static State changeState(Entity targetUser) {
         try {
             State state = State.valueOf(targetUser.getString("user_state"));
             if (state == State.ENABLED)
@@ -83,7 +83,7 @@ public class PermissionsResource {
         }
     }
 
-    public boolean canRemoveUser(Entity user, Entity targetUser) {
+    public static boolean canRemoveUser(Entity user, Entity targetUser) {
         try {
             Role role = Role.valueOf(user.getString("user_role"));
             Role targetRole = Role.valueOf(targetUser.getString("user_role"));
@@ -96,8 +96,9 @@ public class PermissionsResource {
                         return true;
                     break;
                 case USER:
-                    if (user == targetUser)
+                    if (user.getString("user_username").equals(targetUser.getString("user_username")))
                         return true;
+                    break;
                 default:
                     return false;
             }
@@ -107,7 +108,7 @@ public class PermissionsResource {
         }
     }
 
-    public boolean canEditUser(Entity user, Entity targetUser) {
+    public static boolean canEditUser(Entity user, Entity targetUser) {
         try {
             Role role = Role.valueOf(user.getString("user_role"));
             Role targetRole = Role.valueOf(targetUser.getString("user_role"));
@@ -124,8 +125,9 @@ public class PermissionsResource {
                         return true;
                     break;
                 case USER:
-                    if (user == targetUser)
+                    if (user.getString("user_username").equals(targetUser.getString("user_username")))
                         return true;
+                    break;
                 default:
                     return false;
             }

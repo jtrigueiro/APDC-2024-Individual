@@ -60,7 +60,7 @@ public class LoginResource {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
             // check if the user is disabled
-            if (((String) user.getString("user_state")).equals(State.DISABLED.toString())) {
+            if (user.getString("user_state").equals(State.DISABLED.toString())) {
                 LOG.warning("Failed login attempt for username: " + data.username + " - user is disabled");
                 return Response.status(Response.Status.FORBIDDEN).entity("User is not enabled!").build();
             }

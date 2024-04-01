@@ -3,18 +3,17 @@ package pt.unl.fct.di.apdc.firstwebapp.util;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class RoleData {
-    public String targetUsername, newRole;
+public class NewPasswordData {
+    public String password;
     public AuthToken token;
 
-    public RoleData() {
+    public NewPasswordData() {
     }
 
     @JsonCreator
-    public RoleData(@JsonProperty("targetUsername") String targetUsername, @JsonProperty("newRole") String newRole,
+    public NewPasswordData(@JsonProperty("password") String password,
             @JsonProperty("token") AuthToken token) {
-        this.targetUsername = targetUsername;
-        this.newRole = newRole;
+        this.password = password;
         this.token = token;
     }
 }

@@ -22,7 +22,7 @@ public class RegisterResource {
     /**
      * Logger Object
      */
-    private static final Logger LOG = Logger.getLogger(ComputationResource.class.getName());
+    private static final Logger LOG = Logger.getLogger(RegisterResource.class.getName());
 
     private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
@@ -42,7 +42,7 @@ public class RegisterResource {
     @POST
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response doRegistrationV1(RegisterData data) {
+    public Response doRegistration(RegisterData data) {
         LOG.fine("Attempt to register user:" + data.username);
         if (!data.validRegistration())
             return Response.status(Response.Status.BAD_REQUEST).entity("Missing or wrong parameter.").build();
@@ -113,13 +113,13 @@ public class RegisterResource {
                 .set("user_username", "root")
                 .set("user_pwd", DigestUtils.sha512Hex("root"))
                 .set("user_name", "root")
-                .set("user_phone_number", "null")
-                .set("user_email", "null")
-                .set("user_job", "null")
-                .set("user_work_place", "null")
-                .set("user_address", "null")
-                .set("postal_code", "null")
-                .set("user_NIF", "null")
+                .set("user_phone_number", "")
+                .set("user_email", "")
+                .set("user_job", "")
+                .set("user_work_place", "")
+                .set("user_address", "")
+                .set("postal_code", "")
+                .set("user_NIF", "")
                 .set("user_is_private", true)
                 .set("user_role", Role.SU.toString())
                 .set("user_state", State.ENABLED.toString())

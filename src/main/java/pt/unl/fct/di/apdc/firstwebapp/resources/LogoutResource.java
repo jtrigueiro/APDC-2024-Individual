@@ -1,0 +1,59 @@
+package pt.unl.fct.di.apdc.firstwebapp.resources;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.cloud.datastore.*;
+import pt.unl.fct.di.apdc.firstwebapp.util.NewUserData;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.logging.Logger;
+
+@Path("/logout")
+@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+public class LogoutResource {
+    private static final Logger LOG = Logger.getLogger(LogoutResource.class.getName());
+    private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+    private final KeyFactory tokenKeyFactory = datastore.newKeyFactory().setKind("Token");
+
+    public LogoutResource() {
+    }
+
+    @DELETE
+    @Path("/")
+    @JsonCreator
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response doLogout(@JsonProperty("data") NewUserData data) {
+        Key tokenKey = tokenKeyFactory.newKey(data.token.username);
+
+        Entity userToken = datastore.get(tokenKey);
+        if (userToken == null) {
+            LOG.warning("Token not found, no login made");
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+        if (!data.token.tokenID.equals(userToken.getString("token_id"))) {
+            LOG.warning("User has an invalid token");
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
+        Transaction txn = datastore.newTransaction();
+
+        try {
+            txn.delete(tokenKey);
+            LOG.info("User " + data.token.username + " logged out");
+            txn.commit();
+            return Response.status(Response.Status.OK).build();
+        } catch (Exception e) {
+            txn.rollback();
+            LOG.severe(e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        } finally {
+            if (txn.isActive()) {
+                txn.rollback();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            }
+        }
+
+    }
+}

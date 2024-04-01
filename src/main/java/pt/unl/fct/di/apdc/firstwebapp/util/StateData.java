@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class StateData {
-    public String username;
     public String targetUsername;
     public AuthToken token;
 
@@ -12,9 +11,7 @@ public class StateData {
     }
 
     @JsonCreator
-    public StateData(@JsonProperty("username") String username,
-            @JsonProperty("targetUsername") String targetUsername, @JsonProperty("token") AuthToken token) {
-        this.username = username;
+    public StateData(@JsonProperty("targetUsername") String targetUsername, @JsonProperty("token") AuthToken token) {
         this.targetUsername = targetUsername;
         this.token = token;
     }

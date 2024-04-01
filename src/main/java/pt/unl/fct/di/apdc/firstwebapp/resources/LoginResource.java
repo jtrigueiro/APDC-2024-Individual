@@ -21,10 +21,8 @@ import pt.unl.fct.di.apdc.firstwebapp.util.LoginData;
 @Path("/login")
 @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 public class LoginResource {
-    /**
-     * Logger Object
-     */
-    private static final Logger LOG = Logger.getLogger(ComputationResource.class.getName());
+
+    private static final Logger LOG = Logger.getLogger(LoginResource.class.getName());
     private final Gson g = new Gson();
     private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
     private final KeyFactory userKeyFactory = datastore.newKeyFactory().setKind("User");
@@ -154,32 +152,5 @@ public class LoginResource {
         }
 
     }
-
-    /*
-     * @GET
-     * 
-     * @Path("/logintime")
-     * 
-     * @Consumes(MediaType.APPLICATION_JSON)
-     * 
-     * @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-     * public Response queryLoginTime(LoginData data ){
-     * 
-     * Query<Entity> query = Query.newEntityQueryBuilder()
-     * .setKind("UserLog")
-     * .setFilter(
-     * StructuredQuery.CompositeFilter.and(StructuredQuery.PropertyFilter.
-     * hasAncestor(
-     * datastore.newKeyFactory().setKind("User").newKey(data.username)),
-     * StructuredQuery.PropertyFilter.ge("user_login_time", "yesterday")
-     * )
-     * )
-     * .setOrderBy(StructuredQuery.OrderBy.desc("user_login_time"))
-     * .setLimit(3)
-     * .build();
-     * datastore.run(query);
-     * return Response.ok().build();
-     * }
-     */
 
 }

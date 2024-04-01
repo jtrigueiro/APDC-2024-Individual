@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 public class ChangePermissionsResource {
 
-    private static final Logger LOG = Logger.getLogger(LoginResource.class.getName());
+    private static final Logger LOG = Logger.getLogger(ChangePermissionsResource.class.getName());
     private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
     private final KeyFactory userKeyFactory = datastore.newKeyFactory().setKind("User");
     private final KeyFactory tokenKeyFactory = datastore.newKeyFactory().setKind("Token");
@@ -29,9 +29,9 @@ public class ChangePermissionsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Response changeRole(@JsonProperty("data") RoleData data) {
-        Key userKey = userKeyFactory.newKey(data.username);
+        Key userKey = userKeyFactory.newKey(data.token.username);
         Key targetUserKey = userKeyFactory.newKey(data.targetUsername);
-        Key tokenKey = tokenKeyFactory.newKey(data.username);
+        Key tokenKey = tokenKeyFactory.newKey(data.token.username);
 
         Entity userToken = datastore.get(tokenKey);
         if (userToken == null) {
@@ -78,7 +78,8 @@ public class ChangePermissionsResource {
                         .build();
                 txn.update(targetUser);
                 txn.commit();
-                LOG.info("User " + data.username + " changed user " + data.targetUsername + " role to " + data.newRole);
+                LOG.info("User " + data.token.username + " changed user " + data.targetUsername + " role to "
+                        + data.newRole);
                 return Response.ok().build();
 
             } catch (Exception e) {
@@ -100,9 +101,9 @@ public class ChangePermissionsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Response changeState(@JsonProperty("data") StateData data) {
-        Key userKey = userKeyFactory.newKey(data.username);
+        Key userKey = userKeyFactory.newKey(data.token.username);
         Key targetKey = userKeyFactory.newKey(data.targetUsername);
-        Key tokenKey = tokenKeyFactory.newKey(data.username);
+        Key tokenKey = tokenKeyFactory.newKey(data.token.username);
 
         Entity userToken = datastore.get(tokenKey);
         if (userToken == null) {
@@ -151,7 +152,7 @@ public class ChangePermissionsResource {
                 txn.update(targetUser);
                 txn.commit();
                 LOG.info(
-                        "User " + data.username + " changed user " + data.targetUsername + " state to "
+                        "User " + data.token.username + " changed user " + data.targetUsername + " state to "
                                 + targetUserNewState);
                 return Response.ok().build();
 

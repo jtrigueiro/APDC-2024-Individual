@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 public class LogoutResource {
     private static final Logger LOG = Logger.getLogger(LogoutResource.class.getName());
     private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+    private final KeyFactory userKeyFactory = datastore.newKeyFactory().setKind("User");
     private final KeyFactory tokenKeyFactory = datastore.newKeyFactory().setKind("Token");
 
     public LogoutResource() {
@@ -26,12 +27,20 @@ public class LogoutResource {
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Response doLogout(@JsonProperty("data") NewUserData data) {
         Key tokenKey = tokenKeyFactory.newKey(data.token.username);
+        Key userKey = userKeyFactory.newKey(data.token.username);
 
+        Entity user = datastore.get(userKey);
         Entity userToken = datastore.get(tokenKey);
         if (userToken == null) {
             LOG.warning("Token not found, no login made");
             return Response.status(Response.Status.FORBIDDEN).build();
         }
+
+        if (user == null) {
+            LOG.warning("Target user not found");
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
         if (!data.token.tokenID.equals(userToken.getString("token_id"))) {
             LOG.warning("User has an invalid token");
             return Response.status(Response.Status.FORBIDDEN).build();

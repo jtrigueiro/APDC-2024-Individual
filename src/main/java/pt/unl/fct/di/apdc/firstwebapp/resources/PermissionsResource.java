@@ -136,4 +136,33 @@ public class PermissionsResource {
             return false;
         }
     }
+
+    public static boolean canListUsers(Entity user, Entity targetUser) {
+        try {
+            Role role = Role.valueOf(user.getString("user_role"));
+            Role targetRole = Role.valueOf(targetUser.getString("user_role"));
+            boolean targetIsPrivate = targetUser.getBoolean("user_is_private");
+            switch (role) {
+                case SU:
+                    return true;
+                case GA:
+                    if (role.permissionLevel >= targetRole.permissionLevel)
+                        return true;
+                    break;
+                case GBO:
+                    if (role.permissionLevel > targetRole.permissionLevel)
+                        return true;
+                    break;
+                case USER:
+                    if (role.permissionLevel == targetRole.permissionLevel && targetIsPrivate == false)
+                        return true;
+                    break;
+                default:
+                    return false;
+            }
+            return false;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
 }

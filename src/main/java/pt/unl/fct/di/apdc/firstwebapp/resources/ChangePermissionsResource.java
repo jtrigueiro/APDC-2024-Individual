@@ -52,12 +52,12 @@ public class ChangePermissionsResource {
         Entity user = datastore.get(userKey);
         Entity targetUser = datastore.get(targetUserKey);
         if (targetUser == null) {
-            LOG.warning("User not found");
+            LOG.warning("Target user not found");
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
         if (user == null) {
-            LOG.warning("Target user not found");
+            LOG.warning("User not found");
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
@@ -124,12 +124,12 @@ public class ChangePermissionsResource {
         Entity user = datastore.get(userKey);
         Entity targetUser = datastore.get(targetKey);
         if (targetUser == null) {
-            LOG.warning("User not found");
+            LOG.warning("Target user not found");
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
         if (user == null) {
-            LOG.warning("Target user not found");
+            LOG.warning("User not found");
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 

@@ -55,12 +55,12 @@ public class EditUserResource {
         Entity targetUser = datastore.get(targetUserKey);
 
         if (targetUser == null) {
-            LOG.warning("User not found");
+            LOG.warning("Target user not found");
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
         if (user == null) {
-            LOG.warning("Target user not found");
+            LOG.warning("User not found");
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
@@ -85,7 +85,8 @@ public class EditUserResource {
                             .set("user_work_place",
                                     getAttribute(targetUser.getString("user_work_place"), data.workPlace))
                             .set("user_address", getAttribute(targetUser.getString("user_address"), data.address))
-                            .set("postal_code", getAttribute(targetUser.getString("postal_code"), data.postalCode))
+                            .set("user_postal_code",
+                                    getAttribute(targetUser.getString("user_postal_code"), data.postalCode))
                             .set("user_NIF", getAttribute(targetUser.getString("user_NIF"), data.NIF))
                             .set("user_is_private", data.isPrivate)
                             .build();
@@ -99,7 +100,8 @@ public class EditUserResource {
                             .set("user_work_place",
                                     getAttribute(targetUser.getString("user_work_place"), data.workPlace))
                             .set("user_address", getAttribute(targetUser.getString("user_address"), data.address))
-                            .set("postal_code", getAttribute(targetUser.getString("postal_code"), data.postalCode))
+                            .set("user_postal_code",
+                                    getAttribute(targetUser.getString("user_postal_code"), data.postalCode))
                             .set("user_NIF", getAttribute(targetUser.getString("user_NIF"), data.NIF))
                             .set("user_is_private", data.isPrivate)
                             .build();
@@ -144,6 +146,11 @@ public class EditUserResource {
 
         if (userToken == null) {
             LOG.warning("Token not found, no login made");
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
+        if (user == null) {
+            LOG.warning("User not found");
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 

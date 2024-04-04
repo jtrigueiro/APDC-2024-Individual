@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
 
   // Uncomment later on to test the Local DB
   // Test it on Android! Doesn't work on the browser
-  void accessDB(){
+  void accessDB() {
     LocalDB db = LocalDB(localDatabaseName);
     db.initDB();
     db.countUsers();
@@ -27,13 +27,15 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          textSelectionTheme: const TextSelectionThemeData(cursorColor: Colors.black),
+          textSelectionTheme:
+              const TextSelectionThemeData(cursorColor: Colors.black),
           textTheme: const TextTheme(
             titleMedium: TextStyle(color: Colors.black),
           ),
           inputDecorationTheme: InputDecorationTheme(
             hintStyle: TextStyle(color: Colors.black.withOpacity(0.7)),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             border: const OutlineInputBorder(borderSide: BorderSide.none),
           ),
         ),
@@ -44,22 +46,20 @@ class MyApp extends StatelessWidget {
               foregroundColor: Colors.white,
             ),
             body: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 70),
-                    child: const FlutterLogo(
-                      size: 40,
-                    ),
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 70),
+                  child: const FlutterLogo(
+                    size: 40,
                   ),
-                  const LoginScreen(),
-                  // TODO: uncomment to test the Local DB (Android)
-                  //FloatingActionButton(onPressed: accessDB),
-                ],
-            )
-    )
-    ));
+                ),
+                const LoginScreen(),
+                // TODO: uncomment to test the Local DB (Android)
+                //FloatingActionButton(onPressed: accessDB),
+              ],
+            ))));
   }
 }

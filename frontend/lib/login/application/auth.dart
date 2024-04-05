@@ -1,8 +1,47 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:email_validator/email_validator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Authentication {
+  static void saveToken(dynamic token) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('token', token);
+
+  }
+
+  static Future<dynamic> getToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token') ?? '';
+  }
+
+  static void saveTokenInfo(String username, String tokenID, int creationData, int expirationData) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('username', username);
+    prefs.setString('tokenID', tokenID);
+    prefs.setInt('creationData', creationData);
+    prefs.setInt('expirationData', expirationData);
+  }
+
+  static Future<String> getTokenUsername() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('username') ?? '';
+  }
+  static Future<String> getTokenId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('tokenID') ?? '';
+  }
+
+  static Future<int> getTokenCreationData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('creationData') ?? 0;
+  }
+
+  static Future<int> getTokenExpirationData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('expirationData') ?? 0;
+  }
+
   static bool isEmailCompliant(String email) {
     return EmailValidator.validate(email);
   }
@@ -59,14 +98,28 @@ class Authentication {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       print(jsonDecode(response.body));
+      saveToken(response.body);
+      Map<String, dynamic> jsonData = jsonDecode(response.body);
+      saveTokenInfo(jsonData["username"],jsonData["tokenID"],jsonData['creationData'],jsonData['expirationData']);
+      final resposta = await http.post(
+        Uri.parse(
+            "https://consummate-link-415914.oa.r.appspot.com/rest/list/users"),
+        headers: <String, String>{
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode(<dynamic, dynamic>{
+          "token": {
+            "username": await getTokenUsername(),
+            "tokenID": await getTokenId(),
+            "creationData": await getTokenCreationData(),
+            "expirationData": await getTokenExpirationData(),
+          },
+        }),
+      );
+      print(resposta.body);
       return true;
     } else {
       return false;
     }
   }
 }
-/*
-void main() async {
-  // Users lists: https://dummyjson.com/users
-  Authentication.fetchAuthenticate("root", "root");
-}*/

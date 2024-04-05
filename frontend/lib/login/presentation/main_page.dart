@@ -1,6 +1,8 @@
+import 'package:adc_handson_session/login/application/logout.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:adc_handson_session/login/application/auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -15,7 +17,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    userPosition = getCurrentLocation();
+    //userPosition = getCurrentLocation();
   }
 
   Future<Position> getCurrentLocation() async {
@@ -31,45 +33,117 @@ class _MainScreenState extends State<MainScreen> {
     return p;
   }
 
+  void logoutButtonPressed() async {
+    if (await Logout.logoutUser()) {
+      Navigator.pop(context);
+    } else {
+      // Wrong credentials
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const AlertDialog(
+            content: Text(
+                "Wrong token id! Critical error! Contact the support team."),
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Our First App - Main Screen'),
-        ),
-        body: Center(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+      appBar: AppBar(
+        title: const Text('Our First App - Main Screen'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center, // Change to center
           children: <Widget>[
-            Container(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 70),
-              child: const FlutterLogo(
-                size: 40,
+            ElevatedButton(
+              onPressed: () {
+                // TODO: Implement button functionality
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(20),
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              child: const Text('Change users role'),
+            ),
+            const SizedBox(height: 10), // Add SizedBox with desired height
+            ElevatedButton(
+              onPressed: () {
+                // TODO: Implement button functionality
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(20),
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              child: const Text('Change users sate'),
+            ),
+            const SizedBox(height: 10), // Add SizedBox with desired height
+            ElevatedButton(
+              onPressed: () {
+                // TODO: Implement button functionality
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(20),
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              child: const Text('Remove users'),
+            ),
+            const SizedBox(height: 10), // Add SizedBox with desired height
+            ElevatedButton(
+              onPressed: () {
+                // TODO: Implement button functionality
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(20),
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              child: const Text('Edit users attributes'),
+            ),
+            const SizedBox(height: 10), // Add SizedBox with desired height
+            ElevatedButton(
+              onPressed: () {
+                // TODO: Implement button functionality
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(20),
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              child: const Text('Edit password'),
+            ),
+            const SizedBox(height: 10), // Add SizedBox with desired height
+            ElevatedButton(
+              onPressed: () {
+                // TODO: Implement button functionality
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(20),
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              child: const Text('View token, role and state'),
+            ),
+            const SizedBox(height: 10), // Add SizedBox with desired height
+            ElevatedButton(
+              onPressed: () {
+                logoutButtonPressed();
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(20),
+                textStyle: const TextStyle(fontSize: 20),
+                backgroundColor: Colors.red, // Set the background color to red
+              ),
+              child: const Text(
+                'Logout',
+                style: TextStyle(
+                    color: Colors.white), // Set the text color to white
               ),
             ),
-            Column(
-              children: [
-                const Text('Welcome to the best App ever!'),
-                const Padding(padding: EdgeInsets.fromLTRB(20, 20, 20, 0)),
-                // FutureBuilder:
-                FutureBuilder<Position>(
-                  future: userPosition,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Text(
-                          "User Latitude: ${snapshot.data!.latitude} - User Longitude: ${snapshot.data!.longitude}");
-                    } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
-                    }
-
-                    // By default, show a loading spinner.
-                    return const CircularProgressIndicator();
-                  },
-                ),
-              ],
-            ),
           ],
-        )));
+        ),
+      ),
+    );
   }
 }

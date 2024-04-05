@@ -286,7 +286,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Row(
                     children: [
                       const Text(
-                        'Privacy: ',
+                        'Account privacy: ',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,

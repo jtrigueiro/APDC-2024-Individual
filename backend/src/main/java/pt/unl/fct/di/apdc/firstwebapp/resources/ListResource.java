@@ -66,7 +66,7 @@ public class ListResource {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
-        // try {
+        
         Query<Entity> query = Query.newEntityQueryBuilder()
                 .setKind("User")
                 .build();
@@ -100,14 +100,6 @@ public class ListResource {
             }
             LOG.info("User " + data.token.username + " listed the users");
             return Response.ok(g.toJson(usersList)).build();
-            /*
-             * 
-             * } catch (Exception e) {
-             * LOG.severe(e.getMessage());
-             * return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-             * }
-             */
-
         }
     }
 }

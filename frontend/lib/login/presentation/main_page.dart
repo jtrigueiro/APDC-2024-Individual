@@ -13,9 +13,10 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   late Future<Position> userPosition;
-
+  late ScrollController scrollController;
   @override
   void initState() {
+    scrollController = ScrollController();
     super.initState();
     //userPosition = getCurrentLocation();
   }
@@ -55,93 +56,102 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Our First App - Main Screen'),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // Change to center
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                // TODO: Implement button functionality
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(20),
-                textStyle: const TextStyle(fontSize: 20),
-              ),
-              child: const Text('Change users role'),
+        child: Scrollbar(
+          controller: scrollController,
+          child: SingleChildScrollView(
+            controller: scrollController,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center, // Change to center
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: () {
+                    // TODO: Implement button functionality
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(20),
+                    textStyle: const TextStyle(fontSize: 20),
+                  ),
+                  child: const Text('Change users role'),
+                ),
+                const SizedBox(height: 10), // Add SizedBox with desired height
+                ElevatedButton(
+                  onPressed: () {
+                    // TODO: Implement button functionality
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(20),
+                    textStyle: const TextStyle(fontSize: 20),
+                  ),
+                  child: const Text('Change users sate'),
+                ),
+                const SizedBox(height: 10), // Add SizedBox with desired height
+                ElevatedButton(
+                  onPressed: () {
+                    // TODO: Implement button functionality
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(20),
+                    textStyle: const TextStyle(fontSize: 20),
+                  ),
+                  child: const Text('Remove users'),
+                ),
+                const SizedBox(height: 10), // Add SizedBox with desired height
+                ElevatedButton(
+                  onPressed: () {
+                    // TODO: Implement button functionality
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(20),
+                    textStyle: const TextStyle(fontSize: 20),
+                  ),
+                  child: const Text('Edit users attributes'),
+                ),
+                const SizedBox(height: 10), // Add SizedBox with desired height
+                ElevatedButton(
+                  onPressed: () {
+                    // TODO: Implement button functionality
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(20),
+                    textStyle: const TextStyle(fontSize: 20),
+                  ),
+                  child: const Text('Edit password'),
+                ),
+                const SizedBox(height: 10), // Add SizedBox with desired height
+                ElevatedButton(
+                  onPressed: () {
+                    // TODO: Implement button functionality
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(20),
+                    textStyle: const TextStyle(fontSize: 20),
+                  ),
+                  child: const Text('View token, role and state'),
+                ),
+                const SizedBox(height: 10), // Add SizedBox with desired height
+                ElevatedButton(
+                  onPressed: () {
+                    logoutButtonPressed();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(20),
+                    textStyle: const TextStyle(fontSize: 20),
+                    backgroundColor:
+                        Colors.red, // Set the background color to red
+                  ),
+                  child: const Text(
+                    'Logout',
+                    style: TextStyle(
+                        color: Colors.white), // Set the text color to white
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 10), // Add SizedBox with desired height
-            ElevatedButton(
-              onPressed: () {
-                // TODO: Implement button functionality
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(20),
-                textStyle: const TextStyle(fontSize: 20),
-              ),
-              child: const Text('Change users sate'),
-            ),
-            const SizedBox(height: 10), // Add SizedBox with desired height
-            ElevatedButton(
-              onPressed: () {
-                // TODO: Implement button functionality
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(20),
-                textStyle: const TextStyle(fontSize: 20),
-              ),
-              child: const Text('Remove users'),
-            ),
-            const SizedBox(height: 10), // Add SizedBox with desired height
-            ElevatedButton(
-              onPressed: () {
-                // TODO: Implement button functionality
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(20),
-                textStyle: const TextStyle(fontSize: 20),
-              ),
-              child: const Text('Edit users attributes'),
-            ),
-            const SizedBox(height: 10), // Add SizedBox with desired height
-            ElevatedButton(
-              onPressed: () {
-                // TODO: Implement button functionality
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(20),
-                textStyle: const TextStyle(fontSize: 20),
-              ),
-              child: const Text('Edit password'),
-            ),
-            const SizedBox(height: 10), // Add SizedBox with desired height
-            ElevatedButton(
-              onPressed: () {
-                // TODO: Implement button functionality
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(20),
-                textStyle: const TextStyle(fontSize: 20),
-              ),
-              child: const Text('View token, role and state'),
-            ),
-            const SizedBox(height: 10), // Add SizedBox with desired height
-            ElevatedButton(
-              onPressed: () {
-                logoutButtonPressed();
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(20),
-                textStyle: const TextStyle(fontSize: 20),
-                backgroundColor: Colors.red, // Set the background color to red
-              ),
-              child: const Text(
-                'Logout',
-                style: TextStyle(
-                    color: Colors.white), // Set the text color to white
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

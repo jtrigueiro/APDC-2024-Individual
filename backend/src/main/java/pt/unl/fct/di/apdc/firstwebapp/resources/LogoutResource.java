@@ -33,17 +33,24 @@ public class LogoutResource {
         Entity userToken = datastore.get(tokenKey);
         if (userToken == null) {
             LOG.warning("Token not found, no login made");
-            return Response.status(Response.Status.FORBIDDEN).build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Token not found, please login.").build();
         }
 
-        if (user == null) {
+        boolean userExists;
+        try {
+            userExists = user.getString("user_username").equals(data.token.username);
+        } catch (Exception e) {
+            userExists = false;
+        }
+        if (!userExists) {
             LOG.warning("Target user not found");
-            return Response.status(Response.Status.FORBIDDEN).build();
+            return Response.status(Response.Status.FORBIDDEN).entity("User logged in doesn't exist.").build();
         }
 
         if (!data.token.tokenID.equals(userToken.getString("token_id"))) {
             LOG.warning("User has an invalid token");
-            return Response.status(Response.Status.FORBIDDEN).build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Token id is invalid, please login again.")
+                    .build();
         }
 
         Transaction txn = datastore.newTransaction();
@@ -52,7 +59,7 @@ public class LogoutResource {
             txn.delete(tokenKey);
             LOG.info("User " + data.token.username + " logged out");
             txn.commit();
-            return Response.status(Response.Status.OK).build();
+            return Response.ok("User " + data.token.username + " logged out").build();
         } catch (Exception e) {
             txn.rollback();
             LOG.severe(e.getMessage());

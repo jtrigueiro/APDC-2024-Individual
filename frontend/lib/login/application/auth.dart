@@ -4,10 +4,19 @@ import 'package:email_validator/email_validator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Authentication {
+  static Future<void> saveResponse(String response) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('response', response);
+  }
+
+  static Future<String> getResponse() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('response') ?? '';
+  }
+
   static void saveToken(dynamic token) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('token', token);
-
   }
 
   static Future<dynamic> getToken() async {
@@ -15,7 +24,8 @@ class Authentication {
     return prefs.getString('token') ?? '';
   }
 
-  static void saveTokenInfo(String username, String tokenID, int creationData, int expirationData) async {
+  static void saveTokenInfo(String username, String tokenID, int creationData,
+      int expirationData) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('username', username);
     prefs.setString('tokenID', tokenID);
@@ -27,6 +37,7 @@ class Authentication {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('username') ?? '';
   }
+
   static Future<String> getTokenId() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('tokenID') ?? '';
@@ -100,7 +111,8 @@ class Authentication {
       print(jsonDecode(response.body));
       saveToken(response.body);
       Map<String, dynamic> jsonData = jsonDecode(response.body);
-      saveTokenInfo(jsonData["username"],jsonData["tokenID"],jsonData['creationData'],jsonData['expirationData']);
+      saveTokenInfo(jsonData["username"], jsonData["tokenID"],
+          jsonData['creationData'], jsonData['expirationData']);
       final resposta = await http.post(
         Uri.parse(
             "https://consummate-link-415914.oa.r.appspot.com/rest/list/users"),

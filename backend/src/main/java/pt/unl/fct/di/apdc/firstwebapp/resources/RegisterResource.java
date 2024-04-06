@@ -51,9 +51,15 @@ public class RegisterResource {
             // Creates an entity user form the data. THe key is username
             Key userKey = datastore.newKeyFactory().setKind("User").newKey(data.username);
             Entity user = txn.get(userKey);
-            if (user != null) {
+            boolean userExists;
+            try {
+                userExists = user.getString("user_username").equals(data.username);
+            } catch (Exception e) {
+                userExists = false;
+            }
+            if (userExists) {
                 txn.rollback();
-                return Response.status(Response.Status.BAD_REQUEST).entity("User already eists.").build();
+                return Response.status(Response.Status.BAD_REQUEST).entity("Username already exists.").build();
             } else {
                 // Check the number of existing users
                 Query<Entity> query = Query.newEntityQueryBuilder()
@@ -68,7 +74,7 @@ public class RegisterResource {
 
                 if (userCount >= 4) {
                     return Response.status(Response.Status.BAD_REQUEST)
-                            .entity("Maximum of 4 users reached.")
+                            .entity("System maximum of 4 users reached.")
                             .build();
                 }
 
@@ -92,7 +98,7 @@ public class RegisterResource {
                 txn.add(user);
                 LOG.info("User registered " + data.username);
                 txn.commit();
-                return Response.ok("{}").build();
+                return Response.ok("User " + data.username + " was registered with success.").build();
             }
 
         } finally {

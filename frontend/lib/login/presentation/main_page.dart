@@ -1,4 +1,5 @@
 import 'package:adc_handson_session/login/application/logout.dart';
+import 'package:adc_handson_session/login/presentation/change_role_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:adc_handson_session/login/application/auth.dart';
@@ -68,9 +69,11 @@ class _MainScreenState extends State<MainScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 ElevatedButton(
-                  onPressed: () {
-                    // TODO: Implement button functionality
-                  },
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ChanteRoleScreen()),
+                  ),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(20),
                     textStyle: const TextStyle(fontSize: 20),

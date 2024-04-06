@@ -51,10 +51,16 @@ public class LoginResource {
         Transaction txn = datastore.newTransaction();
         try {
             Entity user = txn.get(userKey);
-            if (user == null) {
+            boolean userExists;
+            try {
+                userExists = user.getString("user_username").equals(data.username);
+            } catch (Exception e) {
+                userExists = false;
+            }
+            if (!userExists) {
                 // Username does not exist
                 LOG.warning("Failed login attempt for username: " + data.username);
-                return Response.status(Response.Status.FORBIDDEN).build();
+                return Response.status(Response.Status.FORBIDDEN).entity("Username does not exist").build();
             }
             // check if the user is disabled
             if (user.getString("user_state").equals(State.DISABLED.toString())) {
@@ -136,7 +142,7 @@ public class LoginResource {
                 txn.put(ustats);
                 txn.commit();
                 LOG.warning("Wrong password for username: " + data.username);
-                return Response.status(Response.Status.FORBIDDEN).build();
+                return Response.status(Response.Status.FORBIDDEN).entity("Wrong password.").build();
             }
 
         } catch (Exception e) {

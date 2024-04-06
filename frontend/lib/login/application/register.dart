@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:adc_handson_session/login/application/auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:email_validator/email_validator.dart';
 
@@ -52,6 +53,8 @@ class Register {
         'isPrivate': privacy
       }),
     );
+    print(response.body.toString());
+    await Authentication.saveResponse(response.body.toString());
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,

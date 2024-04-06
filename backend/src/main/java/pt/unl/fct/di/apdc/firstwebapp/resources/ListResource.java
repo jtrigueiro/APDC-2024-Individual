@@ -41,39 +41,45 @@ public class ListResource {
         Entity userToken = datastore.get(tokenKey);
         if (userToken == null) {
             LOG.warning("Token not found, no login made");
-            return Response.status(Response.Status.FORBIDDEN).build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Token not found, please login.").build();
         }
 
         if (!data.token.tokenID.equals(userToken.getString("token_id"))) {
             LOG.warning("User has an invalid token");
-            return Response.status(Response.Status.FORBIDDEN).build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Token id is invalid, please login again.")
+                    .build();
         }
 
         if (System.currentTimeMillis() > userToken.getLong("token_expirationData")) {
             LOG.warning("Token time has expired");
-            return Response.status(Response.Status.FORBIDDEN).build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Token time has expired, please login again.")
+                    .build();
         }
 
         Entity user = datastore.get(userKey);
-
-        if (user == null) {
+        boolean userExists;
+        try {
+            userExists = user.getString("user_username").equals(data.token.username);
+        } catch (Exception e) {
+            userExists = false;
+        }
+        if (!userExists) {
             LOG.warning("User not found");
-            return Response.status(Response.Status.FORBIDDEN).build();
+            return Response.status(Response.Status.FORBIDDEN).entity("User logged in doesn't exist.").build();
         }
 
         if (user.getString("user_state").equals(State.DISABLED.toString())) {
             LOG.warning("User account is disabled");
-            return Response.status(Response.Status.FORBIDDEN).build();
+            return Response.status(Response.Status.FORBIDDEN).entity("User account is disabled.").build();
         }
 
-        
         Query<Entity> query = Query.newEntityQueryBuilder()
                 .setKind("User")
                 .build();
         QueryResults<Entity> results = datastore.run(query);
         if (!results.hasNext()) {
             LOG.warning("No users found");
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("No users found.").build();
         } else {
             List<UserData> usersList = new ArrayList<>();
             while (results.hasNext()) {

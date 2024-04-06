@@ -47,13 +47,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     postalCodeController = TextEditingController();
     nifController = TextEditingController();
     scrollController = ScrollController();
-    isEmptyConstructor();
     doPasswordsMatch = true;
     privacyValue = 'Private';
     super.initState();
-  }
-
-  void isEmptyConstructor() {
     isUserNameEmpty = false;
     isPasswordEmpty = false;
     isPasswordVerificationEmpty = false;
@@ -76,22 +72,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
       bool privacy) async {
     if (await Register.registerUser(username, password, name, phoneNumber,
         email, job, workPlace, homeAddress, postalCode, nif, privacy)) {
+      String message = await Authentication.getResponse();
       Navigator.pop(context);
       showDialog(
         context: context,
         builder: (context) {
-          return const AlertDialog(
-            content: Text("User was registered successfully!"),
+          return AlertDialog(
+            content: Text(message),
           );
         },
       );
     } else {
+      String message = await Authentication.getResponse();
       // Wrong credentials
       showDialog(
         context: context,
         builder: (context) {
-          return const AlertDialog(
-            content: Text("Username Already Exists!"),
+          return AlertDialog(
+            content: Text(message),
           );
         },
       );
@@ -122,6 +120,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       errorText:
                           isUserNameEmpty ? 'This field is mandatory' : null,
                     ),
+                    onChanged: (value) {
+                      if (usernameController.text.isEmpty) {
+                        setState(() {
+                          isUserNameEmpty = true;
+                        });
+                      } else {
+                        setState(() {
+                          isUserNameEmpty = false;
+                        });
+                      }
+                    },
                   ),
                 ),
                 Container(
@@ -145,6 +154,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       } else {
                         setState(() {
                           doPasswordsMatch = true;
+                        });
+                      }
+                      if (passwordController.text.isEmpty) {
+                        setState(() {
+                          isPasswordEmpty = true;
+                        });
+                      } else {
+                        setState(() {
+                          isPasswordEmpty = false;
                         });
                       }
                     },
@@ -176,6 +194,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           doPasswordsMatch = true;
                         });
                       }
+                      if (passwordVerificationController.text.isEmpty) {
+                        setState(() {
+                          isPasswordVerificationEmpty = true;
+                        });
+                      } else {
+                        setState(() {
+                          isPasswordVerificationEmpty = false;
+                        });
+                      }
                     },
                   ),
                 ),
@@ -191,6 +218,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       errorText:
                           isFullNameEmpty ? 'This field is mandatory' : null,
                     ),
+                    onChanged: (value) {
+                      if (nameController.text.isEmpty) {
+                        setState(() {
+                          isFullNameEmpty = true;
+                        });
+                      } else {
+                        setState(() {
+                          isFullNameEmpty = false;
+                        });
+                      }
+                    },
                   ),
                 ),
                 Container(
@@ -205,6 +243,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       errorText:
                           isPhoneNumberEmpty ? 'This field is mandatory' : null,
                     ),
+                    onChanged: (value) {
+                      if (phoneNumberController.text.isEmpty) {
+                        setState(() {
+                          isPhoneNumberEmpty = true;
+                        });
+                      } else {
+                        setState(() {
+                          isPhoneNumberEmpty = false;
+                        });
+                      }
+                    },
                   ),
                 ),
                 Container(
@@ -219,6 +268,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       errorText:
                           isEmailEmpty ? 'This field is mandatory' : null,
                     ),
+                    onChanged: (value) {
+                      if (emailController.text.isEmpty) {
+                        setState(() {
+                          isEmailEmpty = true;
+                        });
+                      } else {
+                        setState(() {
+                          isEmailEmpty = false;
+                        });
+                      }
+                    },
                   ),
                 ),
                 Container(
@@ -331,34 +391,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onPressed: () {
                         if (usernameController.text.isEmpty) {
                           setState(() {
-                            isEmptyConstructor();
                             isUserNameEmpty = true;
                           });
                         } else if (passwordController.text.isEmpty) {
                           setState(() {
-                            isEmptyConstructor();
                             isPasswordEmpty = true;
                           });
                         } else if (passwordVerificationController
                             .text.isEmpty) {
                           setState(() {
-                            isEmptyConstructor();
                             isPasswordVerificationEmpty = true;
                           });
                         } else if (!doPasswordsMatch) {
                         } else if (nameController.text.isEmpty) {
                           setState(() {
-                            isEmptyConstructor();
                             isFullNameEmpty = true;
                           });
                         } else if (phoneNumberController.text.isEmpty) {
                           setState(() {
-                            isEmptyConstructor();
                             isPhoneNumberEmpty = true;
                           });
                         } else if (emailController.text.isEmpty) {
                           setState(() {
-                            isEmptyConstructor();
                             isEmailEmpty = true;
                           });
                         } else {

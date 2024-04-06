@@ -1,5 +1,8 @@
 import 'package:adc_handson_session/login/application/logout.dart';
 import 'package:adc_handson_session/login/presentation/change_role_screen.dart';
+import 'package:adc_handson_session/login/presentation/change_state_screen.dart';
+import 'package:adc_handson_session/login/presentation/edit_users_attributes_screen.dart';
+import 'package:adc_handson_session/login/presentation/remove_users_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:adc_handson_session/login/application/auth.dart';
@@ -82,20 +85,24 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 const SizedBox(height: 10), // Add SizedBox with desired height
                 ElevatedButton(
-                  onPressed: () {
-                    // TODO: Implement button functionality
-                  },
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ChanteStateScreen()),
+                  ),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(20),
                     textStyle: const TextStyle(fontSize: 20),
                   ),
-                  child: const Text('Change users sate'),
+                  child: const Text('Change users state'),
                 ),
                 const SizedBox(height: 10), // Add SizedBox with desired height
                 ElevatedButton(
-                  onPressed: () {
-                    // TODO: Implement button functionality
-                  },
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const RemoveUsersScreen()),
+                  ),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(20),
                     textStyle: const TextStyle(fontSize: 20),
@@ -104,9 +111,12 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 const SizedBox(height: 10), // Add SizedBox with desired height
                 ElevatedButton(
-                  onPressed: () {
-                    // TODO: Implement button functionality
-                  },
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const EditUsersAttributesScreen()),
+                  ),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(20),
                     textStyle: const TextStyle(fontSize: 20),

@@ -1,19 +1,18 @@
 import 'package:adc_handson_session/login/application/register.dart';
-import 'package:adc_handson_session/login/application/change_role.dart';
 import 'package:adc_handson_session/login/presentation/login_screen.dart';
+import 'package:adc_handson_session/login/application/change_state.dart';
 import 'package:flutter/material.dart';
 import 'package:adc_handson_session/login/application/auth.dart';
 import 'package:adc_handson_session/login/presentation/main_page.dart';
 
-class ChanteRoleScreen extends StatefulWidget {
-  const ChanteRoleScreen({super.key});
+class ChanteStateScreen extends StatefulWidget {
+  const ChanteStateScreen({super.key});
 
   @override
-  State<ChanteRoleScreen> createState() => _ChanteRoleScreen();
+  State<ChanteStateScreen> createState() => _ChanteStateScreen();
 }
 
-class _ChanteRoleScreen extends State<ChanteRoleScreen> {
-  late String newRoleValue;
+class _ChanteStateScreen extends State<ChanteStateScreen> {
   late TextEditingController targetUsernameController;
   late ScrollController scrollController;
   late bool isUserNameEmpty;
@@ -23,15 +22,11 @@ class _ChanteRoleScreen extends State<ChanteRoleScreen> {
     targetUsernameController = TextEditingController();
     scrollController = ScrollController();
     isUserNameEmpty = false;
-    newRoleValue = 'USER';
     super.initState();
   }
 
-  void registerButtonPressed(
-    String targetUsername,
-    String newRole,
-  ) async {
-    if (await ChangeRole.changeUserRole(targetUsername, newRole)) {
+  void registerButtonPressed(String targetUsername) async {
+    if (await ChangeState.changeUserState(targetUsername)) {
       String message = await Authentication.getResponse();
       Navigator.pop(context);
       showDialog(
@@ -60,7 +55,7 @@ class _ChanteRoleScreen extends State<ChanteRoleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Our First App - Change Role Screen'),
+          title: const Text('Our First App - Change State Screen'),
         ),
         body: Center(
           child: Scrollbar(
@@ -96,35 +91,6 @@ class _ChanteRoleScreen extends State<ChanteRoleScreen> {
                   ),
                   Container(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                    child: Row(
-                      children: [
-                        const Text(
-                          'Account Role: ',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        DropdownButton<String>(
-                          value: newRoleValue,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              newRoleValue = newValue!;
-                            });
-                          },
-                          items: <String>['SU', 'GA', 'GBO', 'USER']
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                     child: const Text(
                       '* This field is mandatory',
                       style: TextStyle(
@@ -140,7 +106,7 @@ class _ChanteRoleScreen extends State<ChanteRoleScreen> {
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size.fromHeight(50),
                         ),
-                        child: const Text('Change Account State'),
+                        child: const Text('Change Account Satate'),
                         onPressed: () {
                           if (targetUsernameController.text.isEmpty) {
                             setState(() {
@@ -148,7 +114,7 @@ class _ChanteRoleScreen extends State<ChanteRoleScreen> {
                             });
                           } else {
                             registerButtonPressed(
-                                targetUsernameController.text, newRoleValue);
+                                targetUsernameController.text);
                           }
                         },
                       )),

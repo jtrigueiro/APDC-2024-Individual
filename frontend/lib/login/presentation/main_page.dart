@@ -1,12 +1,14 @@
 import 'package:adc_handson_session/login/application/logout.dart';
+import 'package:adc_handson_session/login/presentation/change_password_screen.dart';
 import 'package:adc_handson_session/login/presentation/change_role_screen.dart';
 import 'package:adc_handson_session/login/presentation/change_state_screen.dart';
 import 'package:adc_handson_session/login/presentation/edit_users_attributes_screen.dart';
+import 'package:adc_handson_session/login/presentation/list_user_permissions_screen.dart';
+import 'package:adc_handson_session/login/presentation/list_user_screen.dart';
+import 'package:adc_handson_session/login/presentation/list_users_screen.dart';
 import 'package:adc_handson_session/login/presentation/remove_users_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:adc_handson_session/login/application/auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -25,6 +27,7 @@ class _MainScreenState extends State<MainScreen> {
     //userPosition = getCurrentLocation();
   }
 
+  // !!Not beeing used!!
   Future<Position> getCurrentLocation() async {
     // TODO: It's important to check:
     // - if location services are enabled
@@ -83,7 +86,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   child: const Text('Change users role'),
                 ),
-                const SizedBox(height: 10), // Add SizedBox with desired height
+                const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () => Navigator.push(
                     context,
@@ -96,7 +99,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   child: const Text('Change users state'),
                 ),
-                const SizedBox(height: 10), // Add SizedBox with desired height
+                const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () => Navigator.push(
                     context,
@@ -109,7 +112,20 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   child: const Text('Remove users'),
                 ),
-                const SizedBox(height: 10), // Add SizedBox with desired height
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ListUsersScreen()),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(20),
+                    textStyle: const TextStyle(fontSize: 20),
+                  ),
+                  child: const Text('List users'),
+                ),
+                const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () => Navigator.push(
                     context,
@@ -123,29 +139,47 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   child: const Text('Edit users attributes'),
                 ),
-                const SizedBox(height: 10), // Add SizedBox with desired height
+                const SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: () {
-                    // TODO: Implement button functionality
-                  },
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ChangePasswordScreen()),
+                  ),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(20),
                     textStyle: const TextStyle(fontSize: 20),
                   ),
-                  child: const Text('Edit password'),
+                  child: const Text('Change password'),
                 ),
-                const SizedBox(height: 10), // Add SizedBox with desired height
+                const SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: () {
-                    // TODO: Implement button functionality
-                  },
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const ListUserPermissionsScreen()),
+                  ),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(20),
                     textStyle: const TextStyle(fontSize: 20),
                   ),
                   child: const Text('View token, role and state'),
                 ),
-                const SizedBox(height: 10), // Add SizedBox with desired height
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ListUserScreen()),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(20),
+                    textStyle: const TextStyle(fontSize: 20),
+                  ),
+                  child: const Text('(EXTRA) View profile'),
+                ),
+                const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
                     logoutButtonPressed();
@@ -153,13 +187,11 @@ class _MainScreenState extends State<MainScreen> {
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(20),
                     textStyle: const TextStyle(fontSize: 20),
-                    backgroundColor:
-                        Colors.red, // Set the background color to red
+                    backgroundColor: Colors.red,
                   ),
                   child: const Text(
                     'Logout',
-                    style: TextStyle(
-                        color: Colors.white), // Set the text color to white
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ],

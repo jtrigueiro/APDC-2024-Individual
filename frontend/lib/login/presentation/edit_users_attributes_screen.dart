@@ -1,9 +1,6 @@
 import 'package:adc_handson_session/login/application/change_attributes.dart';
-import 'package:adc_handson_session/login/application/register.dart';
-import 'package:adc_handson_session/login/presentation/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:adc_handson_session/login/application/auth.dart';
-import 'package:adc_handson_session/login/presentation/main_page.dart';
 
 class EditUsersAttributesScreen extends StatefulWidget {
   const EditUsersAttributesScreen({super.key});
@@ -95,7 +92,7 @@ class _EditUsersAttributesScreen extends State<EditUsersAttributesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Our First App - Register Screen'),
+          title: const Text('Our First App - Edit Users Attributes Screen'),
         ),
         body: Scrollbar(
           controller: scrollController,
@@ -257,7 +254,7 @@ class _EditUsersAttributesScreen extends State<EditUsersAttributesScreen> {
                 Container(
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 0), //
                   child: const Text(
-                    '* This field is mandatory.\n** This parameter has no effect for regular users trying to change their own attributes.',
+                    '* This field is mandatory.\n** This field has no effect for regular users trying to change their own attributes.',
                     style: TextStyle(
                       color: Colors.red,
                       fontSize: 12,

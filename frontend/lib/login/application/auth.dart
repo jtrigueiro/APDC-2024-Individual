@@ -14,7 +14,7 @@ class Authentication {
     return prefs.getString('response') ?? '';
   }
 
-  static void saveToken(dynamic token) async {
+  static Future<void> saveToken(dynamic token) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('token', token);
   }
@@ -24,8 +24,8 @@ class Authentication {
     return prefs.getString('token') ?? '';
   }
 
-  static void saveTokenInfo(String username, String tokenID, int creationData,
-      int expirationData) async {
+  static Future<void> saveTokenInfo(String username, String tokenID,
+      int creationData, int expirationData) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('username', username);
     prefs.setString('tokenID', tokenID);
@@ -73,21 +73,11 @@ class Authentication {
     return hasDigits &
         hasUppercase &
         hasLowercase &
-        //hasSpecialCharacters &
+        hasSpecialCharacters &
         hasMinLength;
   }
 
   static Future<bool> loginUser(String username, String password) async {
-    //  API Call to authenticate an user (GoogleAppEngine endpoint)
-
-    // Note: hash passwords before sending them through the communication channel
-    // Example: https://pub.dev/packages/hash_password
-
-    // In the meanwhile, if you don't have an endpoint to authenticate users in
-    // Google app Engine, send a POST to https://dummyjson.com/docs/auth.
-    // Body should be a json {'username': <username>, 'password': <password>}
-    // Use username: hbingley1 - password: CQutx25i8r
-    // More info: https://dummyjson.com/docs/auth
     final result = await fetchAuthenticate(username, password);
     return result;
   }
@@ -109,26 +99,11 @@ class Authentication {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       print(jsonDecode(response.body));
-      saveToken(response.body);
+      await saveToken(response.body);
       Map<String, dynamic> jsonData = jsonDecode(response.body);
-      saveTokenInfo(jsonData["username"], jsonData["tokenID"],
+      await saveTokenInfo(jsonData["username"], jsonData["tokenID"],
           jsonData['creationData'], jsonData['expirationData']);
-      final resposta = await http.post(
-        Uri.parse(
-            "https://consummate-link-415914.oa.r.appspot.com/rest/list/users"),
-        headers: <String, String>{
-          "Content-Type": "application/json",
-        },
-        body: jsonEncode(<dynamic, dynamic>{
-          "token": {
-            "username": await getTokenUsername(),
-            "tokenID": await getTokenId(),
-            "creationData": await getTokenCreationData(),
-            "expirationData": await getTokenExpirationData(),
-          },
-        }),
-      );
-      print(resposta.body);
+
       return true;
     } else {
       return false;

@@ -2,21 +2,20 @@ import 'dart:convert';
 import 'package:adc_handson_session/login/application/auth.dart';
 import 'package:http/http.dart' as http;
 
-class RemoveUsers {
-  static Future<bool> removeUser(String targetUsername) async {
-    final result = await fetchState(targetUsername);
+class ListUsers {
+  static Future<List> listUsers() async {
+    final result = await fetchListUsers();
     return result;
   }
 
-  static Future<bool> fetchState(String targetUsername) async {
-    final response = await http.delete(
+  static Future<List> fetchListUsers() async {
+    final response = await http.post(
       Uri.parse(
-          "https://consummate-link-415914.oa.r.appspot.com/rest/remove/user"),
+          "https://consummate-link-415914.oa.r.appspot.com/rest/list/users"),
       headers: <String, String>{
         "Content-Type": "application/json",
       },
-      body: jsonEncode(<dynamic, dynamic>{
-        "targetUsername": targetUsername,
+      body: jsonEncode(<String, dynamic>{
         "token": {
           "username": await Authentication.getTokenUsername(),
           "tokenID": await Authentication.getTokenId(),
@@ -26,11 +25,13 @@ class RemoveUsers {
       }),
     );
     await Authentication.saveResponse(response.body.toString());
+    List users = await jsonDecode(response.body);
+
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
-      return true;
+      return users;
     } else {
-      return false;
+      return users;
     }
   }
 }

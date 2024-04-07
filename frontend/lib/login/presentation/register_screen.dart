@@ -1,8 +1,6 @@
 import 'package:adc_handson_session/login/application/register.dart';
-import 'package:adc_handson_session/login/presentation/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:adc_handson_session/login/application/auth.dart';
-import 'package:adc_handson_session/login/presentation/main_page.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});

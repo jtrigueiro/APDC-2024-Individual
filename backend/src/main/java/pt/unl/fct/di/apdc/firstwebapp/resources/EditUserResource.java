@@ -191,11 +191,16 @@ public class EditUserResource {
             LOG.warning("User account is disabled");
             return Response.status(Response.Status.FORBIDDEN).entity("User account is disabled.").build();
         }
+
+        if (!user.getString("user_pwd").equals(DigestUtils.sha512Hex(data.password))) {
+            LOG.warning("Current password is incorrect");
+            return Response.status(Response.Status.FORBIDDEN).entity("Current password is incorrect.").build();
+        }
         Transaction txn = datastore.newTransaction();
 
         try {
             Entity updatedUser = Entity.newBuilder(userKey, user)
-                    .set("user_pwd", DigestUtils.sha512Hex(data.password))
+                    .set("user_pwd", DigestUtils.sha512Hex(data.newPassword))
                     .build();
             txn.update(updatedUser);
             txn.commit();

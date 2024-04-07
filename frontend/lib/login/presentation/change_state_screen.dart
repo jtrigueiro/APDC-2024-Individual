@@ -1,9 +1,6 @@
-import 'package:adc_handson_session/login/application/register.dart';
-import 'package:adc_handson_session/login/presentation/login_screen.dart';
 import 'package:adc_handson_session/login/application/change_state.dart';
 import 'package:flutter/material.dart';
 import 'package:adc_handson_session/login/application/auth.dart';
-import 'package:adc_handson_session/login/presentation/main_page.dart';
 
 class ChanteStateScreen extends StatefulWidget {
   const ChanteStateScreen({super.key});
@@ -106,7 +103,7 @@ class _ChanteStateScreen extends State<ChanteStateScreen> {
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size.fromHeight(50),
                         ),
-                        child: const Text('Change Account Satate'),
+                        child: const Text('Confirm account state change'),
                         onPressed: () {
                           if (targetUsernameController.text.isEmpty) {
                             setState(() {

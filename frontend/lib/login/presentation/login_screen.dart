@@ -28,15 +28,6 @@ class _LoginScreenState extends State<LoginScreen> {
         context,
         MaterialPageRoute(builder: (context) => const MainScreen()),
       );
-      var token = await Authentication.getToken();
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Text(token),
-          );
-        },
-      );
     } else {
       // Wrong credentials
       showDialog(

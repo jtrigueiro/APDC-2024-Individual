@@ -1,10 +1,9 @@
-import 'package:adc_handson_session/login/application/register.dart';
+import 'package:adc_handson_session/login/application/logout.dart';
 import 'package:adc_handson_session/login/application/remove_users.dart';
 import 'package:adc_handson_session/login/presentation/login_screen.dart';
-import 'package:adc_handson_session/login/application/change_state.dart';
+import 'package:adc_handson_session/login/presentation/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:adc_handson_session/login/application/auth.dart';
-import 'package:adc_handson_session/login/presentation/main_page.dart';
 
 class RemoveUsersScreen extends StatefulWidget {
   const RemoveUsersScreen({super.key});
@@ -38,6 +37,10 @@ class _RemoveUsersScreen extends State<RemoveUsersScreen> {
           );
         },
       );
+
+      if (targetUsername == await Authentication.getTokenUsername()) {
+        Navigator.popUntil(context, (route) => route.isFirst);
+      }
     } else {
       String message = await Authentication.getResponse();
       // Wrong credentials
@@ -107,7 +110,7 @@ class _RemoveUsersScreen extends State<RemoveUsersScreen> {
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size.fromHeight(50),
                         ),
-                        child: const Text('Remove User'),
+                        child: const Text('Confirm removal'),
                         onPressed: () {
                           if (targetUsernameController.text.isEmpty) {
                             setState(() {

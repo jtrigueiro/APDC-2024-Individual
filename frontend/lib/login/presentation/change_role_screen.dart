@@ -1,9 +1,6 @@
-import 'package:adc_handson_session/login/application/register.dart';
 import 'package:adc_handson_session/login/application/change_role.dart';
-import 'package:adc_handson_session/login/presentation/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:adc_handson_session/login/application/auth.dart';
-import 'package:adc_handson_session/login/presentation/main_page.dart';
 
 class ChanteRoleScreen extends StatefulWidget {
   const ChanteRoleScreen({super.key});
@@ -140,7 +137,7 @@ class _ChanteRoleScreen extends State<ChanteRoleScreen> {
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size.fromHeight(50),
                         ),
-                        child: const Text('Change Account State'),
+                        child: const Text('Confirm account role change'),
                         onPressed: () {
                           if (targetUsernameController.text.isEmpty) {
                             setState(() {

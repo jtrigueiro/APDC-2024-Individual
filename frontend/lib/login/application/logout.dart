@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:adc_handson_session/login/application/auth.dart';
 import 'package:http/http.dart' as http;
-import 'package:email_validator/email_validator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Logout {
   static Future<bool> logoutUser() async {

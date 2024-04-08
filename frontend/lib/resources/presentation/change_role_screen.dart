@@ -1,18 +1,16 @@
-import 'package:adc_handson_session/login/application/logout.dart';
-import 'package:adc_handson_session/login/application/remove_users.dart';
-import 'package:adc_handson_session/login/presentation/login_screen.dart';
-import 'package:adc_handson_session/login/presentation/main_page.dart';
+import 'package:adc_handson_session/resources/application/change_role.dart';
 import 'package:flutter/material.dart';
-import 'package:adc_handson_session/login/application/auth.dart';
+import 'package:adc_handson_session/resources/application/auth.dart';
 
-class RemoveUsersScreen extends StatefulWidget {
-  const RemoveUsersScreen({super.key});
+class ChanteRoleScreen extends StatefulWidget {
+  const ChanteRoleScreen({super.key});
 
   @override
-  State<RemoveUsersScreen> createState() => _RemoveUsersScreen();
+  State<ChanteRoleScreen> createState() => _ChanteRoleScreen();
 }
 
-class _RemoveUsersScreen extends State<RemoveUsersScreen> {
+class _ChanteRoleScreen extends State<ChanteRoleScreen> {
+  late String newRoleValue;
   late TextEditingController targetUsernameController;
   late ScrollController scrollController;
   late bool isUserNameEmpty;
@@ -22,11 +20,15 @@ class _RemoveUsersScreen extends State<RemoveUsersScreen> {
     targetUsernameController = TextEditingController();
     scrollController = ScrollController();
     isUserNameEmpty = false;
+    newRoleValue = 'USER';
     super.initState();
   }
 
-  void registerButtonPressed(String targetUsername) async {
-    if (await RemoveUsers.removeUser(targetUsername)) {
+  void registerButtonPressed(
+    String targetUsername,
+    String newRole,
+  ) async {
+    if (await ChangeRole.changeUserRole(targetUsername, newRole)) {
       String message = await Authentication.getResponse();
       Navigator.pop(context);
       showDialog(
@@ -37,10 +39,6 @@ class _RemoveUsersScreen extends State<RemoveUsersScreen> {
           );
         },
       );
-
-      if (targetUsername == await Authentication.getTokenUsername()) {
-        Navigator.popUntil(context, (route) => route.isFirst);
-      }
     } else {
       String message = await Authentication.getResponse();
       // Wrong credentials
@@ -59,7 +57,7 @@ class _RemoveUsersScreen extends State<RemoveUsersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Our First App - Remove Users Screen'),
+          title: const Text('Our First App - Change Role Screen'),
         ),
         body: Center(
           child: Scrollbar(
@@ -95,6 +93,35 @@ class _RemoveUsersScreen extends State<RemoveUsersScreen> {
                   ),
                   Container(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                    child: Row(
+                      children: [
+                        const Text(
+                          'Account Role: ',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        DropdownButton<String>(
+                          value: newRoleValue,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              newRoleValue = newValue!;
+                            });
+                          },
+                          items: <String>['SU', 'GA', 'GBO', 'USER']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                     child: const Text(
                       '* This field is mandatory',
                       style: TextStyle(
@@ -110,7 +137,7 @@ class _RemoveUsersScreen extends State<RemoveUsersScreen> {
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size.fromHeight(50),
                         ),
-                        child: const Text('Confirm removal'),
+                        child: const Text('Confirm account role change'),
                         onPressed: () {
                           if (targetUsernameController.text.isEmpty) {
                             setState(() {
@@ -118,7 +145,7 @@ class _RemoveUsersScreen extends State<RemoveUsersScreen> {
                             });
                           } else {
                             registerButtonPressed(
-                                targetUsernameController.text);
+                                targetUsernameController.text, newRoleValue);
                           }
                         },
                       )),

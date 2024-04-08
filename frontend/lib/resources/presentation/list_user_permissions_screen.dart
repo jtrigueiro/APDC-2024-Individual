@@ -1,6 +1,6 @@
-import 'package:adc_handson_session/login/application/list_user_permissions.dart';
+import 'package:adc_handson_session/resources/application/list_user_permissions.dart';
 import 'package:flutter/material.dart';
-import 'package:adc_handson_session/login/application/auth.dart';
+import 'package:adc_handson_session/resources/application/auth.dart';
 
 class ListUserPermissionsScreen extends StatefulWidget {
   const ListUserPermissionsScreen({super.key});

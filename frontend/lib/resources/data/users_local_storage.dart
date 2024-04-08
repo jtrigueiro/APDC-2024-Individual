@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:adc_handson_session/login/domain/User.dart';
+import 'package:adc_handson_session/resources/domain/User.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -29,14 +29,14 @@ class LocalDB {
   Future<void> _onCreate(Database db, int version) async {
     print('onCreate');
     await db.transaction((txn) async {
-      await txn.execute('CREATE TABLE users (username TEXT PRIMARY KEY, email TEXT, lastLogin INTEGER)');
+      await txn.execute(
+          'CREATE TABLE users (username TEXT PRIMARY KEY, email TEXT, lastLogin INTEGER)');
     });
   }
 
   // TODO: Draft function. You should adapt after extending the user table
   // with its last position
   Future<void> addUser(final User u) async {
-
     // The `conflictAlgorithm` is used to select the strategy to be used in case
     // the user already exists. In this case, replace any previous data.
     await db.insert(
@@ -56,7 +56,8 @@ class LocalDB {
 
   Future<void> listAllTables() async {
     final db = await initDB();
-    final tables = await db.rawQuery('SELECT * FROM sqlite_master ORDER BY name;');
+    final tables =
+        await db.rawQuery('SELECT * FROM sqlite_master ORDER BY name;');
     print(tables);
   }
 }

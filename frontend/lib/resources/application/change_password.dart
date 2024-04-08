@@ -1,20 +1,24 @@
 import 'dart:convert';
-import 'package:adc_handson_session/login/application/auth.dart';
+import 'package:adc_handson_session/resources/application/auth.dart';
 import 'package:http/http.dart' as http;
 
-class Logout {
-  static Future<bool> logoutUser() async {
-    final result = await fetchLogout();
+class ChangePassword {
+  static Future<bool> changePassword(
+      String password, String newPassword) async {
+    final result = await fetchPassword(password, newPassword);
     return result;
   }
 
-  static Future<bool> fetchLogout() async {
-    final response = await http.delete(
-      Uri.parse("https://consummate-link-415914.oa.r.appspot.com/rest/logout/"),
+  static Future<bool> fetchPassword(String password, String newPassword) async {
+    final response = await http.put(
+      Uri.parse(
+          "https://consummate-link-415914.oa.r.appspot.com/rest/edit/password"),
       headers: <String, String>{
         "Content-Type": "application/json",
       },
-      body: jsonEncode(<dynamic, dynamic>{
+      body: jsonEncode(<String, dynamic>{
+        "password": password,
+        "newPassword": newPassword,
         "token": {
           "username": await Authentication.getTokenUsername(),
           "tokenID": await Authentication.getTokenId(),
@@ -23,10 +27,10 @@ class Logout {
         },
       }),
     );
+    await Authentication.saveResponse(response.body.toString());
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
-      // then parse the JSON.
       return true;
     } else {
       return false;

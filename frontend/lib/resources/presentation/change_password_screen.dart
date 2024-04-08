@@ -1,6 +1,6 @@
-import 'package:adc_handson_session/login/application/change_password.dart';
+import 'package:adc_handson_session/resources/application/change_password.dart';
 import 'package:flutter/material.dart';
-import 'package:adc_handson_session/login/application/auth.dart';
+import 'package:adc_handson_session/resources/application/auth.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});

@@ -1,4 +1,4 @@
-import 'package:adc_handson_session/login/application/list_users.dart';
+import 'package:adc_handson_session/resources/application/list_users.dart';
 import 'package:flutter/material.dart';
 
 class ListUsersScreen extends StatefulWidget {

@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:adc_handson_session/login/application/auth.dart';
+import 'package:adc_handson_session/resources/application/auth.dart';
 import 'package:http/http.dart' as http;
 
 class ListUserPermissions {
@@ -27,11 +27,6 @@ class ListUserPermissions {
     await Authentication.saveResponse(response.body.toString());
     String permissions = (await jsonDecode(response.body)).toString();
 
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      return permissions;
-    } else {
-      return permissions;
-    }
+    return permissions;
   }
 }

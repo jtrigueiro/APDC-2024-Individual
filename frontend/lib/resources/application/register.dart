@@ -1,10 +1,11 @@
 import 'dart:convert';
-import 'package:adc_handson_session/login/application/auth.dart';
+import 'package:adc_handson_session/resources/application/auth.dart';
 import 'package:http/http.dart' as http;
 
-class ChangeAttributes {
-  static Future<bool> changeUserAttributes(
-      String targetUsername,
+class Register {
+  static Future<bool> registerUser(
+      String username,
+      String password,
       String name,
       String phoneNumber,
       String email,
@@ -14,13 +15,14 @@ class ChangeAttributes {
       String postalCode,
       String nif,
       bool privacy) async {
-    final result = await fetchAttributes(targetUsername, name, phoneNumber,
+    final result = await fetchRegister(username, password, name, phoneNumber,
         email, job, workPlace, homeAddress, postalCode, nif, privacy);
     return result;
   }
 
-  static Future<bool> fetchAttributes(
-      String targetUsername,
+  static Future<bool> fetchRegister(
+      String username,
+      String password,
       String name,
       String phoneNumber,
       String email,
@@ -30,14 +32,15 @@ class ChangeAttributes {
       String postalCode,
       String nif,
       bool privacy) async {
-    final response = await http.put(
+    final response = await http.post(
       Uri.parse(
-          "https://consummate-link-415914.oa.r.appspot.com/rest/edit/user"),
+          "https://consummate-link-415914.oa.r.appspot.com/rest/register/"),
       headers: <String, String>{
         "Content-Type": "application/json",
       },
       body: jsonEncode(<String, dynamic>{
-        "targetUsername": targetUsername,
+        "username": username,
+        "password": password,
         "name": name,
         "phoneNumber": phoneNumber,
         "email": email,
@@ -46,15 +49,10 @@ class ChangeAttributes {
         "address": homeAddress,
         "postalCode": postalCode,
         "NIF": nif,
-        "isPrivate": privacy,
-        "token": {
-          "username": await Authentication.getTokenUsername(),
-          "tokenID": await Authentication.getTokenId(),
-          "creationData": await Authentication.getTokenCreationData(),
-          "expirationData": await Authentication.getTokenExpirationData(),
-        },
+        'isPrivate': privacy
       }),
     );
+    print(response.body.toString());
     await Authentication.saveResponse(response.body.toString());
 
     if (response.statusCode == 200) {

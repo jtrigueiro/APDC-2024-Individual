@@ -1,12 +1,12 @@
-import 'package:adc_handson_session/login/application/logout.dart';
-import 'package:adc_handson_session/login/presentation/change_password_screen.dart';
-import 'package:adc_handson_session/login/presentation/change_role_screen.dart';
-import 'package:adc_handson_session/login/presentation/change_state_screen.dart';
-import 'package:adc_handson_session/login/presentation/edit_users_attributes_screen.dart';
-import 'package:adc_handson_session/login/presentation/list_user_permissions_screen.dart';
-import 'package:adc_handson_session/login/presentation/list_user_screen.dart';
-import 'package:adc_handson_session/login/presentation/list_users_screen.dart';
-import 'package:adc_handson_session/login/presentation/remove_users_screen.dart';
+import 'package:adc_handson_session/resources/application/logout.dart';
+import 'package:adc_handson_session/resources/presentation/change_password_screen.dart';
+import 'package:adc_handson_session/resources/presentation/change_role_screen.dart';
+import 'package:adc_handson_session/resources/presentation/change_state_screen.dart';
+import 'package:adc_handson_session/resources/presentation/edit_users_attributes_screen.dart';
+import 'package:adc_handson_session/resources/presentation/list_user_permissions_screen.dart';
+import 'package:adc_handson_session/resources/presentation/list_user_screen.dart';
+import 'package:adc_handson_session/resources/presentation/list_users_screen.dart';
+import 'package:adc_handson_session/resources/presentation/remove_users_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 

@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:adc_handson_session/login/application/auth.dart';
+import 'package:adc_handson_session/resources/application/auth.dart';
 import 'package:http/http.dart' as http;
 
 class RemoveUsers {

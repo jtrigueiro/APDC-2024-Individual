@@ -1,17 +1,17 @@
 import 'dart:convert';
-import 'package:adc_handson_session/login/application/auth.dart';
+import 'package:adc_handson_session/resources/application/auth.dart';
 import 'package:http/http.dart' as http;
 
-class ListUser {
-  static Future<List> listUser() async {
-    final result = await fetchListUser();
+class ListUsers {
+  static Future<List> listUsers() async {
+    final result = await fetchListUsers();
     return result;
   }
 
-  static Future<List> fetchListUser() async {
+  static Future<List> fetchListUsers() async {
     final response = await http.post(
       Uri.parse(
-          "https://consummate-link-415914.oa.r.appspot.com/rest/list/user"),
+          "https://consummate-link-415914.oa.r.appspot.com/rest/list/users"),
       headers: <String, String>{
         "Content-Type": "application/json",
       },
@@ -27,11 +27,6 @@ class ListUser {
     await Authentication.saveResponse(response.body.toString());
     List users = await jsonDecode(response.body);
 
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      return users;
-    } else {
-      return users;
-    }
+    return users;
   }
 }

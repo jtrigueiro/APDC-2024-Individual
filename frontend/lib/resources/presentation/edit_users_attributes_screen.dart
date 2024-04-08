@@ -1,6 +1,6 @@
-import 'package:adc_handson_session/login/application/change_attributes.dart';
+import 'package:adc_handson_session/resources/application/change_attributes.dart';
 import 'package:flutter/material.dart';
-import 'package:adc_handson_session/login/application/auth.dart';
+import 'package:adc_handson_session/resources/application/auth.dart';
 
 class EditUsersAttributesScreen extends StatefulWidget {
   const EditUsersAttributesScreen({super.key});

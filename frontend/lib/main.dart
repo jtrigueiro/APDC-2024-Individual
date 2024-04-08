@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'login/data/users_local_storage.dart';
-import 'login/presentation/login_screen.dart';
+import 'resources/data/users_local_storage.dart';
+import 'resources/presentation/login_screen.dart';
 
 void main() {
   runApp(const MyApp());

@@ -52,7 +52,6 @@ class Register {
         'isPrivate': privacy
       }),
     );
-    print(response.body.toString());
     await Authentication.saveResponse(response.body.toString());
 
     if (response.statusCode == 200) {

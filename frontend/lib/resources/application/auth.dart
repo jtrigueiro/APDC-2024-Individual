@@ -98,7 +98,7 @@ class Authentication {
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      print(jsonDecode(response.body));
+      //print(jsonDecode(response.body));
       await saveToken(response.body);
       Map<String, dynamic> jsonData = jsonDecode(response.body);
       await saveTokenInfo(jsonData["username"], jsonData["tokenID"],
